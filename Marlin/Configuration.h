@@ -707,7 +707,7 @@
  * Override with M92
  *                                      X, Y, Z, E0 [, E1[, E2...]]
  */
-#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 420 }
+#define DEFAULT_AXIS_STEPS_PER_UNIT   { 80, 80, 400, 408 }
 
 /**
  * Default Max Feed Rate (mm/s)
@@ -910,10 +910,10 @@
  *
  * Specify a Probe position as { X, Y, Z }
  */
-#define NOZZLE_TO_PROBE_OFFSET { -48, -8, -1.73 }
+#define NOZZLE_TO_PROBE_OFFSET { -49, -17, -1.6 }
 
 // Certain types of probes need to stay away from edges
-#define MIN_PROBE_EDGE 48
+#define MIN_PROBE_EDGE 49
 
 // X and Y axis travel speed (mm/m) between probes
 #define XY_PROBE_SPEED 10000
