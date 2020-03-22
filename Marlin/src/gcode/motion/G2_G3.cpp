@@ -1,6 +1,6 @@
 /**
  * Marlin 3D Printer Firmware
- * Copyright (c) 2019 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
+ * Copyright (c) 2020 MarlinFirmware [https://github.com/MarlinFirmware/Marlin]
  *
  * Based on Sprinter and grbl.
  * Copyright (c) 2011 Camiel Gubbels / Erik van der Zalm
@@ -105,7 +105,10 @@ void plan_arc(
 
   const feedRate_t scaled_fr_mm_s = MMS_SCALED(feedrate_mm_s);
 
-  #ifdef ARC_SEGMENTS_PER_SEC
+  #ifdef ARC_SEGMENTS_PER_R
+    float seg_length = MM_PER_ARC_SEGMENT * radius;
+    LIMIT(seg_length, MM_PER_ARC_SEGMENT, ARC_SEGMENTS_PER_R);
+  #elif ARC_SEGMENTS_PER_SEC
     float seg_length = scaled_fr_mm_s * RECIPROCAL(ARC_SEGMENTS_PER_SEC);
     NOLESS(seg_length, MM_PER_ARC_SEGMENT);
   #else
@@ -324,7 +327,7 @@ void GcodeSuite::G2_G3(const bool clockwise) {
         // P indicates number of circles to do
         int8_t circles_to_do = parser.byteval('P');
         if (!WITHIN(circles_to_do, 0, 100))
-          SERIAL_ERROR_MSG(MSG_ERR_ARC_ARGS);
+          SERIAL_ERROR_MSG(STR_ERR_ARC_ARGS);
 
         while (circles_to_do--)
           plan_arc(current_position, arc_offset, clockwise);
@@ -335,7 +338,7 @@ void GcodeSuite::G2_G3(const bool clockwise) {
       reset_stepper_timeout();
     }
     else
-      SERIAL_ERROR_MSG(MSG_ERR_ARC_ARGS);
+      SERIAL_ERROR_MSG(STR_ERR_ARC_ARGS);
   }
 }
 
